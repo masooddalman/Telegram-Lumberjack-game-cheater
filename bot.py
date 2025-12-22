@@ -58,7 +58,7 @@ class LumberJackBot:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Lumber Bot Ultimate")
-        self.root.geometry("320x320")
+        self.root.geometry("320x370")
         self.root.attributes("-topmost", True)
         self.running = False
         self.side = "right" 
@@ -68,7 +68,12 @@ class LumberJackBot:
         
         # --- speed variable ---
         # default: 0.04 seconds
+        # default: 0.04 seconds
         self.delay_var = tk.DoubleVar(value=0.04)
+
+        # --- limit variable ---
+        # 0 = unlimited
+        self.limit_var = tk.IntVar(value=0)
 
         # --- sensors ---
         self.sensor_l = DraggableSensor(self.root, "L", 850, 500, "red")
@@ -106,6 +111,14 @@ class LumberJackBot:
         
         tk.Label(slider_frame, text="Left: Faster | Right: Slower", font=("Arial", 7), fg="gray").pack()
 
+        # --- click limit input ---
+        limit_frame = tk.Frame(self.root)
+        limit_frame.pack(pady=5)
+        
+        tk.Label(limit_frame, text="Click Limit (0=Unlimited): ").pack(side="left")
+        self.limit_entry = tk.Entry(limit_frame, textvariable=self.limit_var, width=10)
+        self.limit_entry.pack(side="left")
+
         # --- start button ---
         self.btn = tk.Button(self.root, text="START BOT", command=self.toggle, bg="green", fg="white", font=("Arial", 12, "bold"))
         self.btn.pack(expand=True, fill='x', padx=20, pady=10)
@@ -142,12 +155,18 @@ class LumberJackBot:
 
                 self.running = True
                 self.btn.config(text="STOP", bg="red")
+                # Disable limit entry while running
+                self.limit_entry.config(state="disabled")
                 threading.Thread(target=self.run_logic, daemon=True).start()
             except Exception as e:
                 print(f"Error: {e}")
         else:
-            self.running = False
-            self.btn.config(text="START BOT", bg="green")
+            self.stop_bot()
+
+    def stop_bot(self):
+        self.running = False
+        self.btn.config(text="START BOT", bg="green")
+        self.limit_entry.config(state="normal")
 
     def has_branch(self, pos, ref_color):
         try:
@@ -158,6 +177,9 @@ class LumberJackBot:
             return False, (0,0,0)
 
     def run_logic(self):
+        clicks_done = 0
+        limit = self.limit_var.get()
+        
         while self.running:
             pos_l = self.sensor_l.get_center_pos()
             pos_r = self.sensor_r.get_center_pos()
@@ -178,6 +200,13 @@ class LumberJackBot:
             
             if not ((self.side == "left" and is_branch_l) or (self.side == "right" and is_branch_r)):
                 pyautogui.press(self.side)
+                clicks_done += 1
+                
+                if limit > 0 and clicks_done >= limit:
+                    print(f"Limit of {limit} clicks reached. Stopping.")
+                    # utilize root.after to safely update UI from another thread
+                    self.root.after(0, self.stop_bot)
+                    break
             
             # the delay value from the slider in each loop
             current_delay = self.delay_var.get()
