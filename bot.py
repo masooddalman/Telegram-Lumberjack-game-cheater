@@ -67,8 +67,8 @@ class LumberJackBot:
         self.ref_color_r = (0, 0, 0)
         
         # --- speed variable ---
-        # default: 0.08 seconds
-        self.delay_var = tk.DoubleVar(value=0.08)
+        # default: 0.04 seconds
+        self.delay_var = tk.DoubleVar(value=0.04)
 
         # --- sensors ---
         self.sensor_l = DraggableSensor(self.root, "L", 850, 500, "red")
