@@ -8,6 +8,8 @@ A Python automation bot designed to play and cheat in the Telegram **Lumberjack*
 
 This tool is a desktop application with a graphical user interface (GUI) built using `tkinter`. It creates two "sensor" windows that overlay on your screen. These sensors monitor the game's visuals to detect where the branches are and automatically send keypress commands (Left/Right) to chop the tree at high speeds.
 
+![App Interface](assets/app.jpg)
+
 ## How it Works
 
 The bot operates on a simple but effective visual detection principle:
