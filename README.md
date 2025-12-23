@@ -8,6 +8,8 @@ A Python automation bot designed to play and cheat in the Telegram **Lumberjack*
 
 This tool is a desktop application with a graphical user interface (GUI) built using `tkinter`. It creates two "sensor" windows that overlay on your screen. These sensors monitor the game's visuals to detect where the branches are and automatically send keypress commands (Left/Right) to chop the tree at high speeds.
 
+![App Interface](assets/app.jpg)
+
 ## How it Works
 
 The bot operates on a simple but effective visual detection principle:
@@ -20,6 +22,7 @@ The bot operates on a simple but effective visual detection principle:
     * If a branch is detected on the **Right**, the bot moves/stays **Left**.
     * The bot simulates keyboard presses (`Left` or `Right` arrow keys) to control the character.
 5. **Speed Control**: A slider allows you to adjust the delay between actions, effectively controlling the chopping speed.
+6. **Click Limit**: An input field allows you to set a maximum number of clicks (chops). The bot will automatically stop after reaching this limit. Set to 0 for unlimited.
 
 ## Prerequisites
 
@@ -76,6 +79,7 @@ The bot uses `pyautogui` for screen reading and keyboard control. You need to in
 4. **Play**:
     * The bot will immediately start sending keypresses.
     * You can adjust the **Speed Control** slider to make it faster or slower. If it's too fast, it might misclick or lag; if too slow, you won't get a high score.
+    * Use the **Click Limit** input field to set a specific number of chops if you want the bot to stop automatically (e.g., for a specific score).
 5. **Stop**: Click the **STOP** button (or close the window) to stop the bot.
 
 ## Troubleshooting
