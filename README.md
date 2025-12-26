@@ -1,5 +1,7 @@
 # Telegram Lumberjack Game Cheater
 
+![Thumbnail](assets/thumbnail.jpg)
+
 ![Cover Image](assets/cover.jpg)
 
 A Python automation bot designed to play and cheat in the Telegram **Lumberjack** game. This bot uses screen processing and color detection to automatically chop the tree while avoiding branches.
